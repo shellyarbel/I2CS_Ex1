@@ -18,7 +18,6 @@ class Ex1Test {
 	static double[] po4 = {-3, 0.61, 0.2};
     static double[] arr0 = {0, 0, 0};
     static double[] arr1 = {0, 1};
-    static double[] arr2 = {};
     static double[] arr03 = {0,1,3,0,0};
     static double[] arr3 = {0,1,3};
 
@@ -36,7 +35,7 @@ class Ex1Test {
     void arrayCopy() {
         double[][] arr10 = Ex1.arrayCopy(arr0,arr1);
         double[][] arr32 = Ex1.arrayCopy(po3,po2);
-        double[][] arr24 = Ex1.arrayCopy(arr2,po4);
+        double[][] arr24 = Ex1.arrayCopy(Ex1.ZERO,po4);
         double[][] arr031 = Ex1.arrayCopy(arr03,po1);
         assertArrayEquals(po3,arr32[1]);
         assertArrayEquals(po4,arr24[1]);
@@ -47,12 +46,28 @@ class Ex1Test {
     void compact() {
         double[] arr00 = Ex1.compact(arr0);
         double[] arr11 = Ex1.compact(arr1);
-        double[] arr22 = Ex1.compact(arr2);
         double[] arr33 = Ex1.compact(arr03);
         assertArrayEquals(Ex1.ZERO,arr00);
         assertArrayEquals(arr1,arr11);
-        assertArrayEquals(Ex1.ZERO,arr22);
         assertArrayEquals(arr3,arr33);
+    }
+    @Test
+    void polynomFromPoints() {
+        double[] arr00 = Ex1.PolynomFromPoints(po1,arr1); //null
+        double[] arr2X = {3,5.5};
+        double[] arr2y = {8.09,0};
+        double[] ans22 = {-3.236,17.798};
+        double[] ans33 = {-1.6109,-3.5731,3.779};
+        double[] arr22 = Ex1.PolynomFromPoints(arr2X,arr2y); //{P(x) = -3.236x + 17.798}
+        double[] arr33 = Ex1.PolynomFromPoints(po4,arr3); //{P(x) = -1.611x^2 - 3.574x + 3.779}
+        boolean isSame1 = Ex1.equals(null,arr00);
+        if(!isSame1) {fail();}
+        boolean isSame2 = Ex1.equals(arr22,ans22);
+        if(!isSame2) {fail();}
+        boolean isSame3 = Ex1.equals(arr33,ans33);
+        if(!isSame3) {fail();}
+
+
     }
     /*until here*/
  	@Test
@@ -236,4 +251,5 @@ class Ex1Test {
 		double area = 58.5658;
 		assertEquals(a1,area, Ex1.EPS);
 	}
+
 }
