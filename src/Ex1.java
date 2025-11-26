@@ -70,8 +70,11 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
             double C = (xx[1] * xx[2] * (xx[1] - xx[2]) * yy[0] + xx[2] * xx[0] * (xx[2] - xx[0]) * yy[1] + xx[0] * xx[1] * (xx[0] - xx[1]) * yy[2]) / denom;
             ans=new double[]{A,B,C};
         }
-        if (lx == 2) {
-
+        else if (lx == 2) {
+            if (Math.abs(xx[0]-xx[1])<=EPS) return ans;
+            double A = (yy[0]-yy[1])/(xx[0]-xx[1]);
+            double B = yy[0]-(A*xx[0]);
+            ans=new double[]{A,B};
         }
     }
     return ans;
@@ -144,10 +147,23 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
 	 */
 	public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
-		double ans = x1;
-        /** add you code below
-
-         /////////////////// */
+		double ans = -1;
+            while (ans==-1) {
+                double midX = (x1 + x2) / 2;
+                //double ansp1 = f(p1,midX);
+                //double ansp2 = f(p2,midX);
+                double[] new_p = minus(p1, p2);
+                double ans1 = f(new_p, midX);
+                double result = Math.abs(ans1);
+                if (result <= eps)
+                    ans = midX;
+                else {
+                    double ans2 = f(new_p, x1);
+                    if ((ans2 * ans1) < 0)
+                        x2 = midX;
+                    else x1 = midX;
+                }
+            }
 		return ans;
 	}
 	/**
@@ -200,6 +216,7 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 		double [] ans = ZERO;//  -1.0x^2 +3.0x +2.0
         if (p==null||p.isEmpty())
             return ans;
+        p = p.toLowerCase();
         String [] new_p = p.trim().split("\\s+");
         int maxDegree = 0;
         for (int i=0;i<new_p.length;i++){
@@ -232,7 +249,8 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 		return ans;
 	}
 	/**
-	 * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2)
+	 * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2):
+     * go over length of short array, add numbers from short array to the same place in long array.
 	 * @param p1
 	 * @param p2
 	 * @return
@@ -300,6 +318,12 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
             return new double[][]{new_p1, new_p2};
         }
     }
+
+    /**
+     *
+     * @param p1
+     * @return
+     */
     public static double[] compact (double[] p1) {
         if (p1.length==0 || p1==null ) return ZERO;
         if (p1[p1.length-1]!=0){
@@ -316,5 +340,17 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
         double[] com_p1 = new double[p1.length-i];
         System.arraycopy(p1, 0, com_p1, 0, com_p1.length);
         return com_p1;
+    }
+    public static double[] minus(double[] p1, double[] p2) {
+        double [] ans = ZERO;
+        if (p1==null || p2==null) return ans;
+        double[][] p1p2 = arrayCopy(p1,p2);
+        double[] new_p1 = p1p2[0];
+        ans = p1p2[1];
+        for (int i=0;i<new_p1.length;i++)
+        {
+            ans[i]-=new_p1[i];
+        }
+        return ans;
     }
 }
