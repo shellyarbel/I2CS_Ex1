@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *  * Introduction to Computer Science 2026, Ariel University,
  *  * Ex1: arrays, static functions and JUnit
- *
  * This JUnit class represents a JUnit (unit testing) for Ex1-
  * It contains few testing functions for the polynomial functions as define in Ex1.
  * Note: you should add additional JUnit testing functions to this class.
@@ -13,25 +12,23 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class Ex1Test {
 	static final double[] P1 ={2,0,3, -1,0}, P2 = {0.1,0,1, 0.1,3};
-	static double[] po1 = {2,2}, po2 = {-3, 0.61, 0.2};;
+	static double[] po1 = {2,2}, po2 = {-3, 0.61, 0.2};
 	static double[] po3 = {2,1,-0.7, -0.02,0.02};
 	static double[] po4 = {-3, 0.61, 0.2};
     static double[] arr0 = {0, 0, 0};
     static double[] arr1 = {0, 1};
     static double[] arr03 = {0,1,3,0,0};
     static double[] arr3 = {0,1,3};
-
-
     /**
      * My tests:
      */
     @Test
-    /**
-     * Tests that if p1.length > p2.length
-     * create new_p2 = old p1
-     * create new_p1 = old p2
-     * And if it's the other way around, then the same process is reversed
-     */
+     /**
+      * Tests that if p1.length > p2.length
+      * create new_p2 = old p1
+      * create new_p1 = old p2
+      * And if it's the other way around, then the same process is reversed
+      */
     void arrayCopy() {
         double[][] arr10 = Ex1.arrayCopy(arr0,arr1);
         double[][] arr32 = Ex1.arrayCopy(po3,po2);
@@ -154,7 +151,7 @@ class Ex1Test {
 	void testMulDoubleArrayDoubleArray() {
 		double[] xx = {0,1,2,3,4.1,-15.2222};
 		double[] p12 = Ex1.mul(po1, po2);
-		for(int i = 0;i<xx.length;i=i+1) {
+		for (int i = 0;i<xx.length;i=i+1) {
 			double x = xx[i];
 			double f1x = Ex1.f(po1, x);
 			double f2x = Ex1.f(po2, x);

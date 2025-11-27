@@ -150,8 +150,6 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 		double ans = -1;
             while (ans==-1) {
                 double midX = (x1 + x2) / 2;
-                //double ansp1 = f(p1,midX);
-                //double ansp2 = f(p2,midX);
                 double[] new_p = minus(p1, p2);
                 double ans1 = f(new_p, midX);
                 double result = Math.abs(ans1);
@@ -306,6 +304,19 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
         }
 		return ans;
 	}
+
+    /**
+     * input: Two arrays of doubles,p1 and p2,representing polynomial coefficients.
+     * Action: Standardizes and sorts the two input arrays based on their effective length.
+     * Method:
+     *  1.Compacting: Calls an external compact() function on both arrays (removes insignificant zeros).
+     *  2.Ordering: Compares the final length of the two arrays.
+     *  3.Swapping: If the first array (new_p1) is longer than the second (new_p2), it swaps their positions.
+     * @param p1
+     * @param p2
+     * @return A double array of double arrays (double[][]):
+     * the pair in the order {Shorter Array,Longer Array}.
+     */
     public static double[][] arrayCopy (double[] p1, double[] p2) {
         double[] new_p1 = compact(p1);
         double[] new_p2 = compact(p2);
@@ -320,9 +331,21 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
     }
 
     /**
-     *
+     * input: p1[]
+     * Action: Removes trailing zeros from the input array:
+     *  1.his process compacts the array to its shortest necessary length
+     *  2.eliminating zero coefficients that do not affect the polynomial's degree
+     * Method:
+     *  1.Edge Case Check: Handles null or empty input arrays (returns a pre-defined ZERO array, which presumably is)
+     *  2.No Trailing Zeros: If the last element is non-zero, it returns a direct copy of the array (no compression needed).
+     *  3.Trailing Zeros Loop: It uses a while loop starting from the end of the array to count the number of consecutive zeros (i).
+     *  4.Full Zero Array: If the loop finds that the entire array consists of zeros, it returns ZERO.
+     *  5.Copying: It creates a new array (com_p1) with the calculated shorter length (p1.length-i)
+     *    and copies the non-zero segment of the original array into it.
      * @param p1
-     * @return
+     * @return A new double array:
+     * that is a compacted copy of the original array p1, with all trailing zeros removed.
+     * Special return:ZERO if the input array was empty, null, or consisted only of zeros
      */
     public static double[] compact (double[] p1) {
         if (p1.length==0 || p1==null ) return ZERO;
@@ -341,6 +364,27 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
         System.arraycopy(p1, 0, com_p1, 0, com_p1.length);
         return com_p1;
     }
+
+    /**
+     *input: Two double arrays p1 and p2, representing the coefficients of two polynomials.
+     *Action: Computes the difference between the two input polynomials {P2-P1} by subtracting the coefficients element wise.
+     *Method:
+     *  1.Edge Case Check:
+     *   If either input is null, it returns a pre-defined ZERO array.
+     *  2.Standardization:
+     *   It calls the auxiliary function arrayCopy(p1, p2).
+     *    This function returns the two compacted polynomials in a standardized order:
+     *      +new_p1 becomes the shorter (or equal length) polynomial.
+     *      +ans=p1p2[1] becomes the longer polynomial
+     *  3.Subtraction Loop:
+     *   +It iterates through the length of the shorter polynomial (new_p1.length).
+     *   +In the loop, it subtracts the coefficients of the shorter polynomial from the corresponding coefficients
+     *     of the longer polynomial (ans).
+     * @param p1
+     * @param p2
+     * @return A single double array (double[]):
+     * representing the coefficients of the resulting polynomial PLonger-PShorter.
+     */
     public static double[] minus(double[] p1, double[] p2) {
         double [] ans = ZERO;
         if (p1==null || p2==null) return ans;
