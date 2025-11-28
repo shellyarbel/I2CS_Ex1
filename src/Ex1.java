@@ -177,11 +177,22 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return the length approximation of the function between f(x1) and f(x2).
 	 */
 	public static double length(double[] p, double x1, double x2, int numberOfSegments) {
-		double ans = x1;
-        /** add you code below
-
-         /////////////////// */
-		return ans;
+		double len = 0;
+        double step = (x2-x1)/numberOfSegments;
+        double start_x =0;
+        double end_x = 0;
+        double start_y =0;
+        double end_y =0;
+        double high =0;
+        for (int i = 0; i < numberOfSegments; i++) {
+            start_x = x1 + (i*step);
+            end_x = x1+(i+1)*step;
+            start_y = f(p,start_x);
+            end_y = f(p,end_x);
+            high = end_y-start_y;
+            len += Math.hypot(step,high);
+        }
+        return len;
 	}
 	
 	/**

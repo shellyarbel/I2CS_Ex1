@@ -74,6 +74,13 @@ class Ex1Test {
         double[] p1 = Ex1.minus(po1, Ex1.ZERO);
         assertTrue(Ex1.equals(p1, po1));
     }
+    @Test
+    void length() {
+        double l1 = Ex1.length(po1,0,3,1000);
+        double l2 = Ex1.length(po4,0,1,1000);
+        assertEquals(Math.sqrt(45),l1,Ex1.EPS);
+        assertEquals(1.28913,l2,Ex1.EPS);
+    }
     /*until here*/
  	@Test
 	/**
@@ -256,4 +263,5 @@ class Ex1Test {
 		double area = 58.5658;
 		assertEquals(a1,area, Ex1.EPS);
 	}
+
 }
