@@ -206,7 +206,28 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return the approximated area between the two polynomial functions within the [x1,x2] range.
 	 */
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
-		double ans = 0;
+        double parts = 0;double areaS =0;double next=0;
+        double[] cutsPoints = partsOfArea(p1,p2,x1,x2,numberOfTrapezoid);
+        if (cutsPoints.length==3 && cutsPoints[1]==x2)
+            parts = 1;
+        else parts = cutsPoints.length-1;
+        double step = (x2-x1)/numberOfTrapezoid;
+        for (int i = 0; i < parts; i++) {
+            double numberTrap =Math.ceil((cutsPoints[i+1]-cutsPoints[i])/step);
+            double step1 = (cutsPoints[i+1]-cutsPoints[i])/numberTrap;
+            double first = cutsPoints[i];
+            double a = Math.abs(f(p1,first)-f(p2,first));
+            for (int j = 0; j < numberTrap ; j++) {
+                if (j == numberTrap-1)
+                    next = cutsPoints[i+1];
+                else next = first+step1;
+                double b = Math.abs(f(p1,next)-f(p2,next));
+                areaS += (step1 * (a+b))/2;
+                first = next;
+                a=b;
+            }
+        }
+        return areaS;
 
 		return ans;
 	}
