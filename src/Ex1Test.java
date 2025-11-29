@@ -81,6 +81,20 @@ class Ex1Test {
         assertEquals(Math.sqrt(45),l1,Ex1.EPS);
         assertEquals(1.28913,l2,Ex1.EPS);
     }
+    @Test
+    void length_1() {
+        // P(x) = -x^2 + 4x (Coefficients: C0=0, C1=4, C2=-1)
+        double[] pA = {0, 4, -1};
+        double lA = Ex1.length(pA, 0, 4, 1000);
+        assertEquals(9.29356, lA, Ex1.EPS);
+    }
+    @Test
+    void length_2() {
+        // P(x) = x^3 - 3x + 1 (Coefficients: C0=1, C1=-3, C2=0, C3=1)
+        double[] pB = {1, -3, 0,1};
+        double lB = Ex1.length(pB, 0, 2, 10);
+        assertEquals(7.26417, lB, Ex1.EPS);
+    }
     /*until here*/
  	@Test
 	/**
