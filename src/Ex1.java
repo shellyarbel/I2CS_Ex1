@@ -147,23 +147,22 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
 	 */
 	public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
-		double ans = -1;
-            while (ans==-1) {
-                double midX = (x1 + x2) / 2;
-                double[] new_p = minus(p1, p2);
-                double ans1 = f(new_p, midX);
-                double result = Math.abs(ans1);
-                if (result <= eps)
-                    ans = midX;
-                else {
-                    double ans2 = f(new_p, x1);
-                    if ((ans2 * ans1) < 0)
-                        x2 = midX;
-                    else x1 = midX;
-                }
+        while (Math.abs(x2-x1)>EPS) {
+            double midX = (x1 + x2) / 2;
+            double[] new_p = minus(p1, p2);
+            double ans1 = f(new_p, midX);
+            double result = Math.abs(ans1);
+            if (result <= eps)
+                return midX;
+            else {
+                double ans2 = f(new_p, x1);
+                if ((ans2 * ans1) <= 0)
+                    x2 = midX;
+                else x1 = midX;
             }
-		return ans;
-	}
+        }
+    return (x1 + x2) / 2;
+    }
 	/**
 	 * Given a polynomial function (p), a range [x1,x2] and an integer with the number (n) of sample points.
 	 * This function computes an approximation of the length of the function between f(x1) and f(x2) 
@@ -208,9 +207,7 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 */
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
 		double ans = 0;
-        /** add you code below
 
-         /////////////////// */
 		return ans;
 	}
 	/**
