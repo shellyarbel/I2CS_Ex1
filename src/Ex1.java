@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 /**
  * Introduction to Computer Science 2026, Ariel University,
@@ -147,9 +146,9 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return an x value (x1<=x<=x2) for which |p1(x) - p2(x)| < eps.
 	 */
 	public static double sameValue(double[] p1, double[] p2, double x1, double x2, double eps) {
+        double[] new_p = minus(p1, p2);
         while (Math.abs(x2-x1)>EPS) {
             double midX = (x1 + x2) / 2;
-            double[] new_p = minus(p1, p2);
             double ans1 = f(new_p, midX);
             double result = Math.abs(ans1);
             if (result <= eps)
@@ -229,7 +228,6 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
         }
         return areaS;
 
-		return ans;
 	}
 	/**
 	 * This function computes the array representation of a polynomial function from a String
@@ -425,5 +423,44 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
             ans[i]-=new_p1[i];
         }
         return ans;
+    }
+    public static double[] partsOfArea (double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid){
+        int i = 1;double x = 0;
+        double midX = 0;double ans1 =0;double ans2 =0;
+        double[] parts = new double[]{x1,x2,x2};
+        double[] f_parts = new double[]{x1,x2,x2};
+        double[] new_p = minus(p1, p2);
+        for (int j = 0; j<numberOfTrapezoid; j++) {
+            if (midX==x2){
+                midX = (x1 + x2) / 2;
+                ans2 = f(new_p, midX);
+            }
+            else if (midX==x1) {
+                midX = (x1 + x2) / 2;
+                ans1 = ans2;
+                ans2 = f(new_p, midX);
+            }
+            else {
+                midX = (x1 + x2) / 2;
+                ans1 = f(new_p, x1);
+                ans2 = f(new_p, midX);
+            }
+            if ((ans2 * ans1) <= 0){
+                x = sameValue(p1,p2,x1,midX,EPS);
+                if (x > f_parts[i-1] && x < f_parts[i+1]) {
+                    f_parts[i] = x;
+                    parts = new double[f_parts.length];
+                    System.arraycopy(f_parts, 0, parts, 0, f_parts.length);
+                    f_parts = new double[parts.length+1];
+                    System.arraycopy(parts, 0, f_parts, 0, parts.length);
+                    f_parts[f_parts.length-1] = f_parts[f_parts.length-2] ;
+                    f_parts[f_parts.length-2] = 0;
+                    i++;
+                }
+                x2 = midX;
+            }
+            else x1 = midX;
+        }
+        return parts;
     }
 }
