@@ -68,9 +68,15 @@ class Ex1Test {
         if(!isSame3) {fail();}
     }
     @Test
-    /**
-     * Tests
-     */
+    void polynomFromPoints1() {
+        double[] x_fail1 = {5.0, 5.0};
+        double[] y_fail1 = {1.0, 8.0};
+        assertNull(Ex1.PolynomFromPoints(x_fail1, y_fail1));
+        double[] x_fail2 = {1.0, 1.0, 1.0};
+        double[] y_fail2 = {2.0, 3.0, 4.0};
+        assertNull(Ex1.PolynomFromPoints(x_fail2, y_fail2));
+    }
+    @Test
     void minus() {
         double[] p12 = Ex1.minus(po1, po2);
         double[] p21 = Ex1.minus(po2, po1);
@@ -78,6 +84,18 @@ class Ex1Test {
         double[] p1 = Ex1.minus(po1, Ex1.ZERO);
         assertTrue(Ex1.equals(p1, po1));
     }
+    @Test
+    void minus1() {
+        double[] p1 = {1.0, 2.0}; // P1 = 2x + 1
+        double[] p2 = {5.0, 3.0}; // P2 = 3x + 5
+        double[] ans_expected = {4.0, 1.0};
+        double[] result = Ex1.minus(p1, p2);
+        assertTrue(Ex1.equals(result, ans_expected));
+        double[] pZero = {0.0, 0.0};
+        double[] result2 = Ex1.minus(p1, p1);
+        assertTrue(Ex1.equals(result2, pZero));
+    }
+
     @Test
     void length() {
         double l1 = Ex1.length(po1,0,3,1000);
@@ -97,6 +115,7 @@ class Ex1Test {
         double lB = Ex1.length(pB, 0, 2, 5);
         assertEquals(6.42444, lB, Ex1.EPS);
     }
+
     /*until here*/
  	@Test
 	/**

@@ -133,8 +133,9 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	/**
 	 * Given two polynomial functions (p1,p2), a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
 	 * for which |p1(x) -p2(x)| < eps, assuming (p1(x1)-p2(x1)) * (p1(x2)-p2(x2)) <= 0.
+     * using the Bisection Method.
      * note:If one of the arrays is null, the operation defaults to a calculation based solely on the non-null array,
-     *   effectively treating the missing polynomial's contribution as zero.
+     *  effectively treating the missing polynomial's contribution as zero.
 	 * @param p1 - first polynomial function
 	 * @param p2 - second polynomial function
 	 * @param x1 - minimal value of the range
@@ -193,7 +194,7 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	/**
 	 * Given two polynomial functions (p1,p2), a range [x1,x2] and an integer representing the number of Trapezoids between the functions (number of samples in on each polynom).
 	 * This function computes an approximation of the area between the polynomial functions within the x-range.
-	 * The area is computed using Riemann's like integral (https://en.wikipedia.org/wiki/Riemann_integral)
+	 * The area is computed using Riemann's like integral (https://en.wikipedia.org/wiki/Riemann_integral) and Trapezoidal Rule.
 	 * @param p1 - first polynomial function
 	 * @param p2 - second polynomial function
 	 * @param x1 - minimal value of the range
