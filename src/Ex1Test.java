@@ -251,20 +251,20 @@ class Ex1Test {
 	 * Test the area f1(x)=0, f2(x)=x;
 	 */
 	public void testArea2() {
-		double[] po_a = Ex1.ZERO;
-		double[] po_b = {0,1};
-		double x1 = -1;
-		double x2 = 2;
-		double a1 = Ex1.area(po_a,po_b, x1, x2, 1);
-		double a2 = Ex1.area(po_a,po_b, x1, x2, 2);
-		double a3 = Ex1.area(po_a,po_b, x1, x2, 3);
-		double a100 = Ex1.area(po_a,po_b, x1, x2, 100);
-		double area =2.5;
-		assertEquals(a1,area, Ex1.EPS);
-		assertEquals(a2,area, Ex1.EPS);
-		assertEquals(a3,area, Ex1.EPS);
-		assertEquals(a100,area, Ex1.EPS);
-	}
+        double[] po_a = Ex1.ZERO;
+        double[] po_b = {0, 1};
+        double x1 = -1;
+        double x2 = 2;
+        double a1 = Ex1.area(po_a, po_b, x1, x2, 1);
+        double a2 = Ex1.area(po_a, po_b, x1, x2, 2);
+        double a3 = Ex1.area(po_a, po_b, x1, x2, 3);
+        double a100 = Ex1.area(po_a, po_b, x1, x2, 100);
+        double area = 2.5;
+        assertEquals(a1, area, Ex1.EPS);
+        assertEquals(a2, area, Ex1.EPS);
+        assertEquals(a3, area, Ex1.EPS);
+        assertEquals(a100, area, Ex1.EPS);
+    }
 	@Test
 	/**
 	 * Test the area function.
