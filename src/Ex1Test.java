@@ -92,8 +92,8 @@ class Ex1Test {
     void length_2() {
         // P(x) = x^3 - 3x + 1 (Coefficients: C0=1, C1=-3, C2=0, C3=1)
         double[] pB = {1, -3, 0,1};
-        double lB = Ex1.length(pB, 0, 2, 10);
-        assertEquals(7.26417, lB, Ex1.EPS);
+        double lB = Ex1.length(pB, 0, 2, 5);
+        assertEquals(6.42444, lB, Ex1.EPS);
     }
     /*until here*/
  	@Test
