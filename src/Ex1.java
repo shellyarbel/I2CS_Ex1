@@ -368,7 +368,8 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
             System.arraycopy(p1, 0, com_p1, 0, com_p1.length);
             return com_p1;}
         int i =1;
-        while (p1[p1.length-i]==0){
+        while (p1[p1.length-i]==0)
+        {
             i++;
             if (p1.length-(i)<0){break;}
         }
