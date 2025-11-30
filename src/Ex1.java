@@ -381,6 +381,7 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
     }
 
     /**
+     *
      *The function computes the coefficient array representing the difference between two polynomial functions,P2(X) - P1(X),
      * by subtracting their corresponding coefficients.
      * it first uses an auxiliary function (arrayCopy1) to preprocess and order the arrays as P{Shorter}, P{Longer}.
