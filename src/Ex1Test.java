@@ -26,11 +26,11 @@ class Ex1Test {
      /**
       * Tests that check p1.length > p2.length
       */
-    void arrayCopy() {
-        double[][] arr10 = Ex1.arrayCopy(arr0,arr1);
-        double[][] arr32 = Ex1.arrayCopy(po3,po2);
-        double[][] arr24 = Ex1.arrayCopy(Ex1.ZERO,po4);
-        double[][] arr031 = Ex1.arrayCopy(arr03,po1);
+    void arrayCopy1() {
+        double[][] arr10 = Ex1.arrayCopy1(arr0,arr1);
+        double[][] arr32 = Ex1.arrayCopy1(po3,po2);
+        double[][] arr24 = Ex1.arrayCopy1(Ex1.ZERO,po4);
+        double[][] arr031 = Ex1.arrayCopy1(arr03,po1);
         assertArrayEquals(po3,arr32[1]);
         assertArrayEquals(po4,arr24[1]);
         assertArrayEquals(arr1,arr10[1]);
@@ -50,7 +50,7 @@ class Ex1Test {
     }
     @Test
     /**
-     * Tests that check if
+     * Tests that check polynomFromPoints
      */
     void polynomFromPoints() {
         double[] arr00 = Ex1.PolynomFromPoints(po1,arr1); //null

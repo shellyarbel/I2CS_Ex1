@@ -19,7 +19,7 @@ public class Ex1 {
 	/**
 	 * Computes the f(x) value of the polynomial function at x.
 	 * @param poly - polynomial function
-	 * @param x
+	 * @param x - value
 	 * @return f(x) - the polynomial function value at x.
 	 */
 	public static double f(double[] poly, double x) {
@@ -49,11 +49,12 @@ public class Ex1 {
 		else {return root_rec(p, x12, x2, eps);}
 	}
 	/**
-	 * This function computes a polynomial representation from a set of 2D points on the polynom.
-	 * The solution is based on: //	http://stackoverflow.com/questions/717762/how-to-calculate-the-vertex-of-a-parabola-given-three-points
+     * input: Coordinate arrays for 2 or 3 points.
+     * Converts an input set of X,Y coordinates into the algebraic representation (coefficients) of the resulting polynomial (straight line or parabola).
 	 * Note: this function only works for a set of points containing up to 3 points, else returns null.
-	 * @param xx
-	 * @param yy
+     * Uses closed-form analytical formulas (derived from solving a linear system based on the points) to find the coefficients of the polynomial.
+	 * @param xx :Array of X coordinates.
+	 * @param yy :Array of y coordinates.
 	 * @return an array of doubles representing the coefficients of the polynom.
 	 */
 public static double[] PolynomFromPoints(double[] xx, double[] yy) {
@@ -94,35 +95,29 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
                 return ans;}
         }
         double degree = Math.max(p1.length,p2.length);
-        for (double i = 1;i <= degree+1;i++)
-        {
+        for (double i = 1;i <= degree+1;i++){
             double result1 = f(p1,i);
             double result2 = f(p2,i);
-            if (result2 > result1)
-            {
-                double result = result2-result1;
-                if (result>EPS) {
-                    i=degree+2;
-                    ans = false;}
-            }
-            else {
-                double result = result1-result2;
-                if (result>EPS) {
+            double result = Math.abs(result2-result1);
+            if (result>EPS) {
                 i=degree+2;
-                ans = false;}}
-        }
-        return ans;
+                ans = false;}
+       }
+       return ans;
 	}
-
-	/** 
+	/**
+     * input: A double array (poly) containing coefficients, ordered from constant term to highest degree.
 	 * Computes a String representing the polynomial function.
-	 * For example the array {2,0,3.1,-1.2} will be presented as the following String  "-1.2x^3 +3.1x^2 +2.0"
+     * Iterates backwards (from the highest degree down).
+     * It appends the term and its power, handling signs (+ or implicit sign) between terms. The final constant term is added at the end.
+     * note : I treat a NULL array as a zero array and therefore return an zero string ("0").
 	 * @param poly the polynomial function represented as an array of doubles
 	 * @return String representing the polynomial function:
+     * A String representing the polynomial function in standard algebraic notation, handling signs and omitting zero coefficients.
 	 */
 	public static String poly(double[] poly) {
 		String ans = "";
-		if(poly.length==0) {
+        if(poly.length==0||poly==null) {
             ans="0";
             return ans;}
             for (int i=poly.length-1 ; i > 0; i--) {
@@ -138,6 +133,8 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	/**
 	 * Given two polynomial functions (p1,p2), a range [x1,x2] and an epsilon eps. This function computes an x value (x1<=x<=x2)
 	 * for which |p1(x) -p2(x)| < eps, assuming (p1(x1)-p2(x1)) * (p1(x2)-p2(x2)) <= 0.
+     * note:If one of the arrays is null, the operation defaults to a calculation based solely on the non-null array,
+     *   effectively treating the missing polynomial's contribution as zero.
 	 * @param p1 - first polynomial function
 	 * @param p2 - second polynomial function
 	 * @param x1 - minimal value of the range
@@ -207,14 +204,14 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
         double areaS = 0;
         double step = (x2 - x1) / numberOfTrapezoid;
-        for (double k = x1; k < x2 - EPS; k += step) {
+        for (double k = x1; k < x2; k += step) {
             double a = f(p1, k) - f(p2, k);
             double b = f(p1, k+step) - f(p2,k+step);
             if ((a * b) <= 0){
                 double mid = sameValue(p1,p2,k,k+step,EPS);
                 double area1 = Math.abs((a*(mid-k))/2);
                 double area2 = Math.abs((b*(k+step-mid))/2);
-                areaS = areaS+area1+area2;
+                areaS +=area1+area2;
             }
             else {
                 areaS += (Math.abs((step*(a+b))/2));
@@ -224,15 +221,15 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
     }
 
 	/**
-	 * This function computes the array representation of a polynomial function from a String
-	 * representation. Note:given a polynomial function represented as a double array,
+	 * This function computes the array representation of a polynomial function from a String representation.
+     * Note:given a polynomial function represented as a double array,
 	 * getPolynomFromString(poly(p)) should return an array equals to p.
-	 * 
 	 * @param p - a String representing polynomial function.
-	 * @return
+	 * @return a double[] array representing the polynomial coefficients in standard order
+     * or a ZERO array if the input string is empty or null.
 	 */
 	public static double[] getPolynomFromString(String p) {
-		double [] ans = ZERO;//  -1.0x^2 +3.0x +2.0
+		double [] ans = ZERO;
         if (p==null||p.isEmpty())
             return ans;
         p = p.toLowerCase();
@@ -270,14 +267,14 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	/**
 	 * This function computes the polynomial function which is the sum of two polynomial functions (p1,p2):
      * go over length of short array, add numbers from short array to the same place in long array.
-	 * @param p1
-	 * @param p2
-	 * @return
+	 * @param p1 Coefficient array for the first polynomial.
+	 * @param p2 Coefficient array for the second polynomial.
+	 * @return A double[] array representing the coefficients of the resulting polynomial P1(X) + P2(X).
 	 */
 	public static double[] add(double[] p1, double[] p2) {
 		double [] ans = ZERO;
         if (p1==null || p2==null) return ans;
-        double[][] p1p2 = arrayCopy(p1,p2);
+        double[][] p1p2 = arrayCopy1(p1,p2);
         double[] new_p1 = p1p2[0];
         ans = p1p2[1];
         for (int i=0;i<new_p1.length;i++)
@@ -288,13 +285,13 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	}
 	/**
 	 * This function computes the polynomial function which is the multiplication of two polynoms (p1,p2)
-	 * @param p1
-	 * @param p2
-	 * @return
+	 * @param p1 Coefficient array for the first polynomial.
+	 * @param p2 Coefficient array for the second polynomial.
+	 * @return A double[] array representing the coefficients of the resulting polynomial P1(X) * P2(X)
 	 */
 	public static double[] mul(double[] p1, double[] p2) {
 		double [] ans = ZERO;
-        double[][] p1p2 = arrayCopy(p1,p2);
+        double[][] p1p2 = arrayCopy1(p1,p2);
         double[] new_p1 = p1p2[0];
         double[] new_p2 = p1p2[1];
         if (new_p1==ZERO || new_p2==ZERO) return ZERO;
@@ -309,8 +306,11 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	}
 	/**
 	 * This function computes the derivative of the p0 polynomial function.
-	 * @param po\
-	 * @return
+     * The method iterates through the input array, applying the power rule to each original term to find the new coefficients.
+     * It calculates the new coefficient for x terms of degree i based on the original coefficient and degree,
+     * storing it in the reduced-size output array, followed by removing any trailing zero coefficients.
+	 * @param po - A coefficient array representing the original polynomial P(x)
+	 * @return A double[] array representing the coefficients of the resulting derivative polynomial,P'(x)
 	 */
 	public static double[] derivative (double[] po) {
 		double [] ans = ZERO;
@@ -327,18 +327,17 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	}
 
     /**
-     * input: Two arrays of doubles,p1 and p2,representing polynomial coefficients.
-     * Action: Standardizes and sorts the two input arrays based on their effective length.
-     * Method:
-     *  1.Compacting: Calls an external compact() function on both arrays (removes insignificant zeros).
-     *  2.Ordering: Compares the final length of the two arrays.
-     *  3.Swapping: If the first array (new_p1) is longer than the second (new_p2), it swaps their positions.
-     * @param p1
-     * @param p2
+     * the function compacts and sorts two polynomial coefficient arrays by length.
+     * the function receives two coefficient arrays,p1 and p2.it first calls an auxiliary function, compact, on both arrays
+     * to remove trailing zero coefficients (standardization). it then sorts the two arrays based on their effective length,
+     * ensuring the shorter array is always returned as the first element (index 0) and the longer array is the second element (index 1).
+     * it returns double[][] array containing the two processed arrays in sorted order.
+     * @param p1 double arrays
+     * @param p2 double arrays
      * @return A double array of double arrays (double[][]):
      * the pair in the order {Shorter Array,Longer Array}.
      */
-    public static double[][] arrayCopy (double[] p1, double[] p2) {
+    public static double[][] arrayCopy1 (double[] p1, double[] p2) {
         double[] new_p1 = compact(p1);
         double[] new_p2 = compact(p2);
         if (new_p1.length <= new_p2.length) {return new double[][]{new_p1, new_p2};
@@ -352,21 +351,14 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
     }
 
     /**
-     * input: p1[]
-     * Action: Removes trailing zeros from the input array:
-     *  1.his process compacts the array to its shortest necessary length
-     *  2.eliminating zero coefficients that do not affect the polynomial's degree
-     * Method:
-     *  1.Edge Case Check: Handles null or empty input arrays (returns a pre-defined ZERO array, which presumably is)
-     *  2.No Trailing Zeros: If the last element is non-zero, it returns a direct copy of the array (no compression needed).
-     *  3.Trailing Zeros Loop: It uses a while loop starting from the end of the array to count the number of consecutive zeros (i).
-     *  4.Full Zero Array: If the loop finds that the entire array consists of zeros, it returns ZERO.
-     *  5.Copying: It creates a new array (com_p1) with the calculated shorter length (p1.length-i)
-     *    and copies the non-zero segment of the original array into it.
-     * @param p1
+     * The function compact returns a copy of the input polynomial coefficient array, removing any trailing
+     * zero coefficients that do not affect the polynomial's mathematical value.
+     * it first checks for edge cases (null/empty input, or last term is 0). if trailing zeros exist, it iterates backwards,
+     * counting the zeros (i). it then creates a new array (com_p1) with the correct reduced length (p1.length-i)
+     * and copies only the non-zero segment of the original array into it.
+     * @param p1 a double array, representing polynomial coefficients
      * @return A new double array:
-     * that is a compacted copy of the original array p1, with all trailing zeros removed.
-     * Special return:ZERO if the input array was empty, null, or consisted only of zeros
+     * a double[] array that is a compacted copy of p1, or a ZERO array if the input was empty or entirely zeros.
      */
     public static double[] compact (double[] p1) {
         if (p1.length==0 || p1==null ) return ZERO;
@@ -387,31 +379,22 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
     }
 
     /**
-     *input: Two double arrays p1 and p2, representing the coefficients of two polynomials.
-     *Action: Computes the difference between the two input polynomials {P2-P1} by subtracting the coefficients element wise.
-     *Method:
-     *  1.Edge Case Check:
-     *   If either input is null, it returns a pre-defined ZERO array.
-     *  2.Standardization:
-     *   It calls the auxiliary function arrayCopy(p1, p2).
-     *    This function returns the two compacted polynomials in a standardized order:
-     *      +new_p1 becomes the shorter (or equal length) polynomial.
-     *      +ans=p1p2[1] becomes the longer polynomial
-     *  3.Subtraction Loop:
-     *   +It iterates through the length of the shorter polynomial (new_p1.length).
-     *   +In the loop, it subtracts the coefficients of the shorter polynomial from the corresponding coefficients
-     *     of the longer polynomial (ans).
-     * @param p1
-     * @param p2
+     *The function computes the coefficient array representing the difference between two polynomial functions,P2(X) - P1(X),
+     * by subtracting their corresponding coefficients.
+     * it first uses an auxiliary function (arrayCopy1) to preprocess and order the arrays as P{Shorter}, P{Longer}.
+     * the result array ans is initialized to the P{Longer} array. it then iterates through the length of P{Shorter},
+     * subtracting its coefficients from the corresponding coefficients in P{Longer} (ans[i] -= P{Shorter}).
+     * @param p1 double array representing the polynomials
+     * @param p2 double array representing the polynomials
      * @return A single double array (double[]):
-     * representing the coefficients of the resulting polynomial PLonger-PShorter.
+     *representing the coefficients of the resulting polynomial P2(X) - P1(X).
      */
     public static double[] minus(double[] p1, double[] p2) {
-        double [] ans = ZERO;
-        if (p1==null || p2==null) return ans;
-        double[][] p1p2 = arrayCopy(p1,p2);
+        if (p1==null) return p2;
+        if (p2==null) return p1;
+        double[][] p1p2 = arrayCopy1(p1,p2);
         double[] new_p1 = p1p2[0];
-        ans = p1p2[1];
+        double[] ans = p1p2[1];
         for (int i=0;i<new_p1.length;i++)
         {
             ans[i]-=new_p1[i];
