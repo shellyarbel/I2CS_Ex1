@@ -9,7 +9,6 @@
  * This is the main Class you should implement (see "add your code below")
  *
  * @author boaz.benmoshe
-
  */
 public class Ex1 {
 	/** Epsilon value for numerical computation, it serves as a "close enough" threshold. */
