@@ -24,10 +24,7 @@ class Ex1Test {
      */
     @Test
      /**
-      * Tests that if p1.length > p2.length
-      * create new_p2 = old p1
-      * create new_p1 = old p2
-      * And if it's the other way around, then the same process is reversed
+      * Tests that check p1.length > p2.length
       */
     void arrayCopy() {
         double[][] arr10 = Ex1.arrayCopy(arr0,arr1);
@@ -40,6 +37,9 @@ class Ex1Test {
         assertArrayEquals(arr3,arr031[1]);
     }
     @Test
+    /**
+     * Tests that cut the trailing zeros
+     */
     void compact() {
         double[] arr00 = Ex1.compact(arr0);
         double[] arr11 = Ex1.compact(arr1);
@@ -49,6 +49,9 @@ class Ex1Test {
         assertArrayEquals(arr3,arr33);
     }
     @Test
+    /**
+     * Tests that check if
+     */
     void polynomFromPoints() {
         double[] arr00 = Ex1.PolynomFromPoints(po1,arr1); //null
         double[] arr2X = {3,5.5};
@@ -63,10 +66,11 @@ class Ex1Test {
         if(!isSame2) {fail();}
         boolean isSame3 = Ex1.equals(arr33,ans33);
         if(!isSame3) {fail();}
-
-
     }
     @Test
+    /**
+     * Tests
+     */
     void minus() {
         double[] p12 = Ex1.minus(po1, po2);
         double[] p21 = Ex1.minus(po2, po1);
@@ -83,14 +87,12 @@ class Ex1Test {
     }
     @Test
     void length_1() {
-        // P(x) = -x^2 + 4x (Coefficients: C0=0, C1=4, C2=-1)
         double[] pA = {0, 4, -1};
         double lA = Ex1.length(pA, 0, 4, 1000);
         assertEquals(9.29356, lA, Ex1.EPS);
     }
     @Test
     void length_2() {
-        // P(x) = x^3 - 3x + 1 (Coefficients: C0=1, C1=-3, C2=0, C3=1)
         double[] pB = {1, -3, 0,1};
         double lB = Ex1.length(pB, 0, 2, 5);
         assertEquals(6.42444, lB, Ex1.EPS);

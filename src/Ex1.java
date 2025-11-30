@@ -205,30 +205,24 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
 	 * @return the approximated area between the two polynomial functions within the [x1,x2] range.
 	 */
 	public static double area(double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid) {
-        double parts = 0;double areaS =0;double next=0;
-        double[] cutsPoints = partsOfArea(p1,p2,x1,x2,numberOfTrapezoid);
-        if (cutsPoints.length==3 && cutsPoints[1]==x2)
-            parts = 1;
-        else parts = cutsPoints.length-1;
-        double step = (x2-x1)/numberOfTrapezoid;
-        for (int i = 0; i < parts; i++) {
-            double numberTrap =Math.ceil((cutsPoints[i+1]-cutsPoints[i])/step);
-            double step1 = (cutsPoints[i+1]-cutsPoints[i])/numberTrap;
-            double first = cutsPoints[i];
-            double a = Math.abs(f(p1,first)-f(p2,first));
-            for (int j = 0; j < numberTrap ; j++) {
-                if (j == numberTrap-1)
-                    next = cutsPoints[i+1];
-                else next = first+step1;
-                double b = Math.abs(f(p1,next)-f(p2,next));
-                areaS += (step1 * (a+b))/2;
-                first = next;
-                a=b;
+        double areaS = 0;
+        double step = (x2 - x1) / numberOfTrapezoid;
+        for (double k = x1; k < x2 - EPS; k += step) {
+            double a = f(p1, k) - f(p2, k);
+            double b = f(p1, k+step) - f(p2,k+step);
+            if ((a * b) <= 0){
+                double mid = sameValue(p1,p2,k,k+step,EPS);
+                double area1 = Math.abs((a*(mid-k))/2);
+                double area2 = Math.abs((b*(k+step-mid))/2);
+                areaS = areaS+area1+area2;
+            }
+            else {
+                areaS += (Math.abs((step*(a+b))/2));
             }
         }
         return areaS;
+    }
 
-	}
 	/**
 	 * This function computes the array representation of a polynomial function from a String
 	 * representation. Note:given a polynomial function represented as a double array,
@@ -423,44 +417,5 @@ public static double[] PolynomFromPoints(double[] xx, double[] yy) {
             ans[i]-=new_p1[i];
         }
         return ans;
-    }
-    public static double[] partsOfArea (double[] p1,double[]p2, double x1, double x2, int numberOfTrapezoid){
-        int i = 1;double x = 0;
-        double midX = 0;double ans1 =0;double ans2 =0;
-        double[] parts = new double[]{x1,x2,x2};
-        double[] f_parts = new double[]{x1,x2,x2};
-        double[] new_p = minus(p1, p2);
-        for (int j = 0; j<numberOfTrapezoid; j++) {
-            if (midX==x2){
-                midX = (x1 + x2) / 2;
-                ans2 = f(new_p, midX);
-            }
-            else if (midX==x1) {
-                midX = (x1 + x2) / 2;
-                ans1 = ans2;
-                ans2 = f(new_p, midX);
-            }
-            else {
-                midX = (x1 + x2) / 2;
-                ans1 = f(new_p, x1);
-                ans2 = f(new_p, midX);
-            }
-            if ((ans2 * ans1) <= 0){
-                x = sameValue(p1,p2,x1,midX,EPS);
-                if (x > f_parts[i-1] && x < f_parts[i+1]) {
-                    f_parts[i] = x;
-                    parts = new double[f_parts.length];
-                    System.arraycopy(f_parts, 0, parts, 0, f_parts.length);
-                    f_parts = new double[parts.length+1];
-                    System.arraycopy(parts, 0, f_parts, 0, parts.length);
-                    f_parts[f_parts.length-1] = f_parts[f_parts.length-2] ;
-                    f_parts[f_parts.length-2] = 0;
-                    i++;
-                }
-                x2 = midX;
-            }
-            else x1 = midX;
-        }
-        return parts;
     }
 }
